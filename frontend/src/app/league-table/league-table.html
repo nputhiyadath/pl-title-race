@@ -1,0 +1,28 @@
+<div class="bg-white rounded-xl shadow p-4">
+    <h2 class="font-semibold mb-3">League Table</h2>
+
+
+    <table class="w-full text-sm">
+        <thead class="text-left text-slate-500">
+            <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th>Pts</th>
+                <th>GD</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of rows" class="border-t">
+                <td>{{ row.position }}</td>
+                <td class="font-medium">{{ row.team }}</td>
+                <td>{{ row.points }}</td>
+                <td>{{ row.goalDifference }}</td>
+                <td>
+                    <span *ngIf="row.delta > 0" class="text-green-600">↑</span>
+                    <span *ngIf="row.delta < 0" class="text-red-600">↓</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

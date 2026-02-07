@@ -1,0 +1,93 @@
+<div class="p-6 space-y-6">
+    <h1 class="text-2xl font-bold">Title Race Simulator</h1>
+
+    <div *ngIf="loading()" class="text-center py-8">
+        <p class="text-gray-600">Loading fixtures and probabilities...</p>
+    </div>
+
+    <div *ngIf="!loading()" class="grid md:grid-cols-2 gap-6">
+
+        <div class="bg-white rounded-xl shadow p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="font-semibold">Upcoming Fixtures (Next 10)</h2>
+                <button
+                    (click)="resetFixtures()"
+                    class="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300">
+                    Reset
+                </button>
+            </div>
+
+            <div *ngIf="fixtures().length === 0" class="text-gray-500 text-center py-4">
+                No upcoming fixtures found
+            </div>
+
+            <div *ngFor="let f of fixtures()" class="mb-4 border-b pb-3">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-medium">{{ f.home }} vs {{ f.away }}</span>
+                    <span class="text-xs text-gray-500">{{ f.date }}</span>
+                </div>
+
+                <div class="flex gap-2">
+                    <button
+                        class="px-3 py-1 rounded border text-sm"
+                        [class.bg-emerald-500]="f.result === 'H'"
+                        [class.text-white]="f.result === 'H'"
+                        (click)="selectResult(f, 'H')">
+                        Home Win
+                    </button>
+
+                    <button
+                        class="px-3 py-1 rounded border text-sm"
+                        [class.bg-slate-400]="f.result === 'D'"
+                        [class.text-white]="f.result === 'D'"
+                        (click)="selectResult(f, 'D')">
+                        Draw
+                    </button>
+
+                    <button
+                        class="px-3 py-1 rounded border text-sm"
+                        [class.bg-emerald-500]="f.result === 'A'"
+                        [class.text-white]="f.result === 'A'"
+                        (click)="selectResult(f, 'A')">
+                        Away Win
+                    </button>
+                </div>
+            </div>
+
+            <button
+                (click)="runSimulation()"
+                class="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Run Simulation
+            </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-4">
+            <h2 class="font-semibold mb-4">Current Title Probabilities</h2>
+
+            <div *ngIf="probabilities().length === 0" class="text-gray-500 text-center py-4">
+                No probability data available
+            </div>
+
+            <div class="space-y-3">
+                <div *ngFor="let prob of probabilities()" class="flex justify-between items-center">
+                    <span class="font-medium">{{ prob.team }}</span>
+                    <div class="flex items-center gap-2">
+                        <div class="w-32 bg-gray-200 rounded-full h-4">
+                            <div
+                                class="bg-blue-600 h-4 rounded-full"
+                                [style.width.%]="prob.probability">
+                            </div>
+                        </div>
+                        <span class="text-sm w-12 text-right">{{ prob.probability }}%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 p-3 bg-blue-50 rounded text-sm text-gray-700">
+                <p class="font-semibold mb-1">How it works:</p>
+                <p>Select outcomes for upcoming fixtures, then click "Run Simulation" to see how they affect title probabilities. The Monte Carlo engine runs 10,000 simulations respecting your chosen results.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
